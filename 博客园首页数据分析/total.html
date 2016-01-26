@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <head>
+    <title>博客园数据分析（获取各时间段发文总量）</title>
+    <meta charset="utf-8">
+    <script src="js/Chart.min.js"></script>
+  </head>
+  <body>
+    <div style="width: 50%">
+      <canvas id="canvas" height="450" width="600"></canvas>
+    </div>
+
+  <script>
+  window.onload = function(){
+    var ctx = document.getElementById("canvas").getContext("2d");
+
+    // jsonp 回调
+    window.fn = function(data) {
+
+      // hours[0] 表示 0-1 点的文章量
+      var hours = []
+      // sum[0] 表示 0-1 点的总访问量
+        , sum = []; 
+
+      for (var i = 0; i < 24; i++)
+        hours[i] = sum[i] = 0;
+
+      for (var i = 0, len = data.length; i < len; i++) {
+
+        var postHour = +data[i].postHour
+          , viewTimes = +data[i].viewTimes;
+
+        hours[postHour]++;
+        sum[postHour] += viewTimes;
+      }
+
+      var barChartData = {
+        labels : ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", 
+          "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
+        datasets : [
+          {
+            fillColor : "rgba(220,220,220,0.5)",
+            strokeColor : "rgba(220,220,220,0.8)",
+            highlightFill: "rgba(220,220,220,0.75)",
+            highlightStroke: "rgba(220,220,220,1)",
+            data : []
+          }
+        ]
+      };
+      
+      for (var i = 0; i < 24; i++) 
+        barChartData.datasets[0].data.push(hours[i]);
+
+      window.myBar = new Chart(ctx).Bar(barChartData, {
+        responsive : true
+      });
+
+    }
+
+    // jsonp 请求接口
+    var s = document.createElement("script");
+    s.src = "http://localhost:3000";
+    document.body.appendChild(s);
+  };
+  </script>
+  </body>
+</html>
