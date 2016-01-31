@@ -74,7 +74,7 @@
 
 这一部分我做的比较粗糙，这也是我的爬虫 AC 正确率比较低下的原因。
 
-我选择了百度来爬取答案。以 hdu1004 这道题为例，如果要搜索该题的 AC 代码，我们一般会在百度搜索框中输出 *hdu1004*，而结果展现的页面 url 为 <https://www.baidu.com/s?ie=UTF-8&wd=hdu1004>。这个 url 还是非常有规律的，https://www.baidu.com/s?ie=UTF-8&wd= 加上 keyword。
+我选择了百度来爬取答案。以 hdu1004 这道题为例，如果要搜索该题的 AC 代码，我们一般会在百度搜索框中输入 *hdu1004*，而结果展现的页面 url 为 <https://www.baidu.com/s?ie=UTF-8&wd=hdu1004>。这个 url 还是非常有规律的，https://www.baidu.com/s?ie=UTF-8&wd= 加上 keyword。
 
 百度的一个页面会展现 10 个搜索结果，代码里我选择了 ACMer 在 csdn 里的题解，因为 csdn 里的代码块真是太好找了，不信请看。
 
