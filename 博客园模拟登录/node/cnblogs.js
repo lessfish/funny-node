@@ -58,10 +58,10 @@ function login() {
 
       var pos = str.indexOf(';');
 
-      // 后续操作所需要的唯一 cookie
+      // 后续操作所需要的 cookie
       myCookie = str.substr(0, pos);
 
-      // 后续操作，比如发帖，回帖等
+      // 后续操作
       // ...
       // http://www.cnblogs.com/zichi/p/5331426.html 回帖
       superagent
