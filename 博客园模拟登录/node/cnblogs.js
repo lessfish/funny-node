@@ -72,7 +72,8 @@ function login(cb) {
 
 // 回帖操作
 function doSomething() {
-  // http://www.cnblogs.com/panzimu/articles/5328844.html 回帖
+  // 回帖
+  // http://www.cnblogs.com/zichi/p/5331426.html
   var content = '好文要顶!';
 
   superagent
