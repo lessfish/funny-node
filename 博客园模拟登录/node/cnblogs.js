@@ -15,7 +15,7 @@ function getEncryptData(cb) {
       input1 = data.username;
       input2 = data.password;
 
-      cb(goToLogin);
+      cb(login);
     });
 }
 
@@ -35,12 +35,13 @@ function goToLogin(cb) {
       VerificationTokenValue = tmpArr[1]; 
 
       // 模拟登录
-      cb(login);
+      cb(doSomething);
     });
 }
 
 
-function login() {
+// 模拟登录
+function login(cb) {
   superagent
     // 登录 url
     .post('http://passport.cnblogs.com/user/signin')
@@ -63,14 +64,23 @@ function login() {
 
       // 后续操作
       // ...
-      // http://www.cnblogs.com/zichi/p/5331426.html 回帖
-      superagent
-        .post('http://www.cnblogs.com/mvc/PostComment/Add.aspx')
-        .set("Cookie", myCookie)
-        .send({"blogApp": "zichi"})
-        .send({"body": "好文要顶！"})
-        .send({"postId": 5331426})
-        .end(function (err, sres) { // callback
-        });
+      // 回帖
+      cb();
+
     });
+}
+
+// 回帖操作
+function doSomething() {
+  // http://www.cnblogs.com/panzimu/articles/5328844.html 回帖
+  var content = '好文要顶!';
+
+  superagent
+    .post('http://www.cnblogs.com/mvc/PostComment/Add.aspx')
+    .set("Cookie", myCookie)
+    .send({"blogApp": "zichi"})
+    .send({"body": content})
+    .send({"postId": 5331426})
+    .end(function (err, sres) { // callback
+    })
 }
