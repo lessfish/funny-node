@@ -26,7 +26,6 @@ function getUrls() {
 // 页面解析，返回需要的内容
 function analyze(page) {
   var $ = cheerio.load(page);
-
   var userId = $('.table_text td').eq(6).html();
 
   return userId;
@@ -36,10 +35,10 @@ function analyze(page) {
 function fetchUrl(url, ep) {
   superagent.get(url)
     .end(function (err, res) {
-      ep.emit('topic_html', res.text);
+      // 抛出 `curl` 事件
+      ep.emit('curl', res.text);
     });
 }
-
 
 
 // start
@@ -51,12 +50,12 @@ app.get('/', function (req, res, next) {
   // 得到一个 eventproxy 的实例
   var ep = new eventproxy();
 
-  // 命令 ep 重复监听 urls.length 次（在这里也就是 10 次） `topic_html` 事件再行动
-  ep.after('topic_html', urls.length, function (pages) {
-    // topics 是个数组，包含了 10 次 ep.emit('topic_html', page) 中的那 10 个 page
-    // 开始行动
+  // ep 重复监听 `curl` 事件 urls.length 次（在这里也就是 10 次）后
+  // 执行回调函数
+  ep.after('curl', urls.length, function (pages) {
+    // pages 是个数组，包含了 10 次 ep.emit('curl', page) 中的那 10 个 page
     pages = pages.map(function(page) {
-      // 接下来都是 jquery 的用法了
+      // 接下来都是 jQuery 的用法了
       return analyze(page);
     });
 
@@ -67,9 +66,9 @@ app.get('/', function (req, res, next) {
   urls.forEach(function(item) {
     fetchUrl(item, ep);
   });
-
 });
 
+// listen
 app.listen(3000, function () {
   console.log('app is listening at port 3000');
 });
