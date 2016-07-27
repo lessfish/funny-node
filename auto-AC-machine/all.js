@@ -20,7 +20,7 @@ function post(code, problemId) {
 function getCode(solutionUrl, problemId) {
   superagent.get(solutionUrl, function(err, sres) {
     // 为防止该 solutionUrl 可能不是题解详情页
-    // 可能会没有 class 为 cpp 的 dom 元素
+    // 如果不是，则没有 class 为 cpp 的 dom 元素
     try {
       var $ = cheerio.load(sres.text);
       var code = $('.cpp').eq(0).text();
