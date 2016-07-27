@@ -1,4 +1,4 @@
-<meta charset="utf-8" />  
+<meta charset="utf-8" />
 <title>JSEncrypt 加密和解密</title>
 <script src="js/jquery-1.8.3.min.js"></script>
 <script src="js/jsencrypt.min.js"></script>
@@ -6,7 +6,7 @@
 <script>
   // 需要加密的数据
   var value = 'Hello RSA!';
-  
+
   document.write(value);
 
   // 使用 jsencrypt 类库加密 js 方法
@@ -16,11 +16,11 @@
       hABs0PzR+by8Ruf3FqHJozaFHMe240HsvKYE1jhDMTVp5xoT70fqnJxFBA0tRPhH\
       KIcS01l77McG0XNHAgMBAAE=\
       -----END PUBLIC KEY-----';
-  
+
   var encrypt = new JSEncrypt();
 
   encrypt.setPublicKey(publicKey);
-  
+
   // 加密后的数据
   var encode_value= encrypt.encrypt(value);
 
@@ -29,5 +29,5 @@
 
   $.post('php/post.php', {name: encode_value}, function(data) {
     console.info(data);
-  }, 'json'); 
+  }, 'json');
 </script>

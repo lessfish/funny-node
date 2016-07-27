@@ -2,26 +2,26 @@ var superagent = require('superagent')
   , myCookie, VerificationTokenValue, input1, input2;
 
 // start
-getEncryptData(goToLogin);
+// 获取加密后的用户名和密码
+getEncryptData();
 
-// 获取 username&password 加密后的数据
-function getEncryptData(cb) {
+// 获取 username & password 加密后的数据
+function getEncryptData() {
   superagent
-    .get('http://localhost/jsencrypt/a.txt')
+    .get('http://localhost/cnblogs-auto-login/encrypt-data/a.txt')
     .end(function (err, sres) { // callback
-
       var data = JSON.parse(sres.text);
-      
+
       input1 = data.username;
       input2 = data.password;
 
-      cb(login);
+      // 去登录页面
+      goToLogin();
     });
 }
 
-
 // go to 登录页面
-function goToLogin(cb) {      
+function goToLogin() {
   superagent
     .get('http://passport.cnblogs.com/user/signin?ReturnUrl=http://passport.cnblogs.com/')
     .end(function (err, sres) { // callback
@@ -32,16 +32,15 @@ function goToLogin(cb) {
       var pattern = /'VerificationToken': '(.*)'/
            , tmpArr = str.match(pattern);
 
-      VerificationTokenValue = tmpArr[1]; 
+      VerificationTokenValue = tmpArr[1];
 
       // 模拟登录
-      cb(doSomething);
+      login();
     });
 }
 
-
 // 模拟登录
-function login(cb) {
+function login() {
   superagent
     // 登录 url
     .post('http://passport.cnblogs.com/user/signin')
@@ -54,9 +53,7 @@ function login(cb) {
     .set("Cookie", "AspxAutoDetectCookieSupport=1;")
     .set("X-Requested-With", "XMLHttpRequest")
     .end(function(err, sres) {
-
       var str = sres.header['set-cookie'][0];
-
       var pos = str.indexOf(';');
 
       // 后续操作所需要的 cookie
@@ -64,9 +61,8 @@ function login(cb) {
 
       // 后续操作
       // ...
-      // 回帖
-      cb();
-
+      // 比如回帖
+      doSomething();
     });
 }
 

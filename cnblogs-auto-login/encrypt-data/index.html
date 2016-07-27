@@ -1,4 +1,4 @@
-<meta charset="utf-8" />  
+<meta charset="utf-8" />
 <title>JavaScript RSA Encryption</title>
 <script src="js/jquery-1.8.3.min.js"></script>
 <script src="js/jsencrypt.min.js"></script>
@@ -9,22 +9,21 @@
   var username = 'xxxx';
   var password = 'xxxx';
 
-  
   // 使用 jsencrypt 类库加密
   // 博客园登录的 RSA 公钥
   var publicKey = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCp0wHYbg/NOPO3nzMD3dndwS0MccuMeXCHgVlGOoYyFwLdS24Im2e7YyhB0wrUsyYf0/nhzCzBK8ZC9eCWqd0aHbdgOQT6CuFQBMjbyGYvlVYU2ZP7kG9Ft6YV6oc9ambuO7nPZh+bvXH0zDKfi02prknrScAKC0XhadTHT3Al0QIDAQAB';
-  
+
   var encrypt = new JSEncrypt();
 
   encrypt.setPublicKey(publicKey);
-  
+
   var encode_username = encrypt.encrypt(username);
   var encode_password = encrypt.encrypt(password);
 
   var ajax_data = {};
   ajax_data.username = encode_username;
   ajax_data.password = encode_password;
-  
-  $.post('php/encrypt_data.php', {data: JSON.stringify(ajax_data)}, function(data) {
+
+  $.post('php/post.php', {data: JSON.stringify(ajax_data)}, function(data) {
   }, 'json');
 </script>

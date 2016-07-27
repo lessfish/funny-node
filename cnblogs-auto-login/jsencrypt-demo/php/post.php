@@ -30,11 +30,11 @@ BSOkEe0crEoHqd8QKsXESIgcF+YQT6uJSeb9e8uR
  * 使用 PHP OpenSSL 时，最好先看看手册，了解如何开启 OpenSSL 和其中的一些方法的使用
  *  具体如何使用这里不做赘述，大家去看看 PHP 手册，什么都就解决了
  */
-$pi_key = openssl_pkey_get_private($private_key); // 这个函数可用来判断私钥是否是可用的，可用返回资源 Resource id  
-$pu_key = openssl_pkey_get_public($public_key); // 这个函数可用来判断公钥是否是可用的  
+$pi_key = openssl_pkey_get_private($private_key); // 这个函数可用来判断私钥是否是可用的，可用返回资源 Resource id
+$pu_key = openssl_pkey_get_public($public_key); // 这个函数可用来判断公钥是否是可用的
 
-$decrypted = "";  
-openssl_private_decrypt(base64_decode($_POST['name']), $decrypted, $pi_key); // 私钥解密  
+$decrypted = "";
+openssl_private_decrypt(base64_decode($_POST['name']), $decrypted, $pi_key); // 私钥解密
 
 // $decrypted 就是解密后的数据
 echo json_encode($decrypted);
