@@ -18,13 +18,15 @@ app.get('/', function (req, res, next) {
       }
 
       // sres.text 里面存储着网页的 html 内容，将它传给 cheerio.load 之后
-      // 就可以得到一个实现了 jquery 接口的变量，我们习惯性地将它命名为 `$`
-      // 剩下就都是 jquery 的内容了
+      // 就可以得到一个实现了 jQuery 接口的变量，我们习惯性地将它命名为 `$`
+      // 剩下就都是 jQuery 的内容了
       var $ = cheerio.load(sres.text);
-      var ans = '';
+      var ans = [];
+
       $('.titlelnk').each(function (index, item) {
         var $item = $(item);
-        ans += $item.html() + '<br/><br/>';
+        // 如果用 $item.html() 会得到 HTML 实体编码
+        ans.push($item.text());
       });
 
       // 将内容呈现到页面
