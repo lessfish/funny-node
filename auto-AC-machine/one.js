@@ -1,6 +1,6 @@
 var cheerio = require('cheerio')
   , superagent = require('superagent')
-  , globalCookie = undefined;
+  , globalCookie;
 
 
 // 模拟代码提交

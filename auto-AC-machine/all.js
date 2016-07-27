@@ -1,6 +1,6 @@
 var cheerio = require('cheerio')
   , superagent = require('superagent')
-  , globalCookie = undefined;
+  , globalCookie;
 
 
 // 模拟代码提交
@@ -16,28 +16,24 @@ function post(code, problemId) {
     });
 }
 
-
 // 从 csdn 题解详情页获取代码
 function getCode(solutionUrl, problemId) {
-
   superagent.get(solutionUrl, function(err, sres) {
     // 为防止该 solutionUrl 可能不是题解详情页
     // 可能会没有 class 为 cpp 的 dom 元素
     try {
       var $ = cheerio.load(sres.text);
-
       var code = $('.cpp').eq(0).text();
 
       if (!code)
         return;
-      
+
       post(code, problemId);
     } catch(e) {
 
     }
   });
 }
-
 
 // 模拟百度搜索题解
 function bdSearch(problemId) {
@@ -52,10 +48,8 @@ function bdSearch(problemId) {
       var lis = $('.t a');
       for (var i = 0; i < 10; i++) {
         var node = lis.eq(i);
-
         // 获取那个小的 url 地址
         var text = node.parent().next().next().children("a").text();
-
         // 如果 url 不带有 csdn 字样，则返回
         if (text.toLowerCase().indexOf("csdn") === -1)
           continue;
@@ -79,7 +73,6 @@ function login() {
       var str = sres.header['set-cookie'][0];
       // 过滤响应头 Cookie 中的 path 字段
       var pos = str.indexOf(';');
-
       // 全局变量存储 Cookie，post 代码提交时候用
       globalCookie = str.substr(0, pos);
 
@@ -103,14 +96,15 @@ function login() {
 
 
 // 程序启动
+// 控制刷题范围
 function start() {
-  for (var i = 1000; i <= 5600; i++) {
+  for (var i = 1000; i <= 1010; i++) {
     var problemId = i
       , delay = (i - 1000) * 10000;
 
     (function(delay, problemId) {
       setTimeout(function() {
-        bdSearch(problemId);  
+        bdSearch(problemId);
       }, delay);
     }(delay, problemId));
   }
