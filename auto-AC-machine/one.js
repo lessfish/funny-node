@@ -19,18 +19,16 @@ function post(code, problemId) {
 
 // 从 csdn 题解详情页获取代码
 function getCode(solutionUrl, problemId) {
-
   superagent.get(solutionUrl, function(err, sres) {
     // 为防止该 solutionUrl 可能不是题解详情页
-    // 可能会没有 class 为 cpp 的 dom 元素
+    // 如果不是，则没有 class 为 cpp 的 dom 元素
     try {
       var $ = cheerio.load(sres.text);
-
       var code = $('.cpp').eq(0).text();
 
       if (!code)
         return;
-      
+
       post(code, problemId);
     } catch(e) {
 
@@ -45,11 +43,12 @@ function bdSearch(problemId) {
 
   superagent
     .get(searchUrl)
-    // 必带的请求头
+    // 必带的请求头 UA
     .set("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36")
     .end(function(err, sres) {
       var $ = cheerio.load(sres.text);
       var lis = $('.t a');
+
       for (var i = 0; i < 10; i++) {
         var node = lis.eq(i);
 
@@ -57,6 +56,7 @@ function bdSearch(problemId) {
         var text = node.parent().next().next().children("a").text();
 
         // 如果 url 不带有 csdn 字样，则返回
+        // 只分析 csdn 题解
         if (text.toLowerCase().indexOf("csdn") === -1)
           continue;
 
@@ -79,7 +79,6 @@ function login() {
       var str = sres.header['set-cookie'][0];
       // 过滤响应头 Cookie 中的 path 字段
       var pos = str.indexOf(';');
-
       // 全局变量存储 Cookie，post 代码提交时候用
       globalCookie = str.substr(0, pos);
 
@@ -101,6 +100,7 @@ function login() {
     });
 }
 
+// 模拟提交 hdoj 1004
 function start() {
   bdSearch(1004);
 }
