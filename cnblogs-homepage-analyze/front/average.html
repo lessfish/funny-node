@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>博客园数据分析（获取各时间段发文总量）</title>
+    <title>博客园数据分析（获取各时间段发文平均阅读量）</title>
     <meta charset="utf-8">
     <script src="js/Chart.min.js"></script>
   </head>
@@ -19,23 +19,26 @@
 
       // hours[0] 表示 0-1 点的文章量
       var hours = []
-      // sum[0] 表示 0-1 点的总访问量
-        , sum = []; 
+        // sum[0] 表示 0-1 点的总访问量
+        , sum = [];
 
       for (var i = 0; i < 24; i++)
         hours[i] = sum[i] = 0;
 
       for (var i = 0, len = data.length; i < len; i++) {
-
         var postHour = +data[i].postHour
           , viewTimes = +data[i].viewTimes;
+
+        // 阈值 2000
+        if (viewTimes > 2000)
+          continue;
 
         hours[postHour]++;
         sum[postHour] += viewTimes;
       }
 
       var barChartData = {
-        labels : ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", 
+        labels : ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
           "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
         datasets : [
           {
@@ -47,14 +50,13 @@
           }
         ]
       };
-      
-      for (var i = 0; i < 24; i++) 
-        barChartData.datasets[0].data.push(hours[i]);
+
+      for (var i = 0; i < 24; i++)
+        barChartData.datasets[0].data.push(~~(sum[i] / hours[i]));
 
       window.myBar = new Chart(ctx).Bar(barChartData, {
         responsive : true
       });
-
     }
 
     // jsonp 请求接口

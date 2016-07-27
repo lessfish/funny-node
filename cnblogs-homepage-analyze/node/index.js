@@ -9,32 +9,28 @@ var ep = new eventproxy()
 
 
 app.get('/', function (req, res, next) {
-
   var postUrl = 'http://www.cnblogs.com/mvc/AggSite/PostList.aspx'
+    // 共有 200 页文章
     // 从第 51 页开始抓取
-    , startNum = 51 
+    , startNum = 51
     // 抓取的网页数量
-    , pageNum = 150;  
-  
+    , pageNum = 150;
 
-  // 监听
-  ep.after('topic_html', pageNum, function (data) {
-    // topics 是个数组，包含了 pageNum 次 ep.emit('topic_html', tmp) 中的那 pageNum 个 tmp
-    // 开始行动
+  // 监听 pageNum 次 `curl` 事件后，执行回调
+  ep.after('curl', pageNum, function (data) {
+    // data 是个数组，包含了 pageNum 次 ep.emit('curl', tmp) 中的那 pageNum 个 tmp
 
     var ans = [];
     for (var i = 0, len = data.length; i < len; i++)
       Array.prototype.push.apply(ans, data[i]);
 
-    // 返回 jsonp，callback 函数名为 fn
+    // 返回 jsonp 供前端调用，callback 函数名为 fn
     res.send("fn(" + JSON.stringify(ans) + ");");
   });
-    
 
   // 从第 51 页开始抓取
   for (var i = startNum; i < startNum + pageNum; i++) {
-    
-    superagent  
+    superagent
       .post(postUrl)
       .send({"CategoryType":"SiteHome","ParentCategoryId":0,"CategoryId":808,"PageIndex":i,"ItemListActionName":"PostList"})
       .end(function (err, sres) { // callback
@@ -44,8 +40,8 @@ app.get('/', function (req, res, next) {
         }
 
         // sres.text 里面存储着网页的 html 内容，将它传给 cheerio.load 之后
-        // 就可以得到一个实现了 jquery 接口的变量，我们习惯性地将它命名为 `$`
-        // 剩下就都是 jquery 的内容了
+        // 就可以得到一个实现了 jQuery 接口的变量，我们习惯性地将它命名为 `$`
+        // 剩下就都是 jQuery 的内容了
         var $ = cheerio.load(sres.text);
         // 存储每页 20 条数据的 20 个对象
         var tmp = [];
@@ -70,14 +66,13 @@ app.get('/', function (req, res, next) {
           tmp[index].viewTimes = str.substring(start + 1, end);
         });
 
-        // 每抓取一个网页，触发事件
-        ep.emit('topic_html', tmp.concat());
+        // 每抓取一个网页，抛出事件
+        ep.emit('curl', tmp.concat());
       });
   }
 });
 
-// 监听端口
-// 启动服务后打开 localhost:3000 打开页面
+// listen
 app.listen(3000, function () {
   console.log('app is listening at port 3000');
 });
