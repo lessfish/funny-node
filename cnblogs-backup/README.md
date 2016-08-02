@@ -1,11 +1,11 @@
 # 博客园博文备份
 
 1. 进入 <https://i.cnblogs.com/BlogBackup.aspx> 下载博客园提供的备份文件（xml 格式）
-2. 修改 `index.js` 文件中的 `baseFileSrc` 变量值为备份根目录地址（改地址必须真实存在），`xmlSrc` 值为步骤一所得文件的地址
+2. 修改 `index.js` 文件中的 `baseFileSrc` 变量值为备份根目录地址（该地址必须真实存在），`xmlSrc` 值为步骤一所得文件的地址
 3. `node index.js`
 
 
-备份结束目测结构如下：
+备份结束目录结构如下：
 
     cnblogs|
           --|2014
