@@ -11,7 +11,7 @@ var fs = require('fs');
 
 // to download picture
 function download(url, savePath) {
-	var req = http.get(url, function(res){
+  var req = http.get(url, function(res){
     var binImage = '';
     res.setEncoding('binary');
 
@@ -30,7 +30,7 @@ function download(url, savePath) {
         console.log('It\'s saved!'); // 文件被保存
       });
     });
-	});
+  });
 }
 
 fs.readFile(xmlSrc, {encoding: "utf-8"}, function(err, data) {
