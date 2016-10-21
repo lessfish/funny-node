@@ -7,7 +7,7 @@
 - [自动AC机器人][4]
 - [博客园模拟登录][5]
 - [博客园博文备份](https://github.com/hanzichi/funny-node/tree/master/cnblogs-backup)
-- [Excel 数据读取 Demo](https://github.com/hanzichi/funny-node/tree/master/xlsx-demo)
+- [Excel 数据读取](https://github.com/hanzichi/funny-node/tree/master/excel-reader)
 
 
 

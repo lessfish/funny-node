@@ -1,0 +1,14 @@
+{
+  "name": "excel-reader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "excel-reader.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "xlsx": "^0.8.0"
+  }
+}

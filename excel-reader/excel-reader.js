@@ -1,19 +1,11 @@
-/*
-* see more
-* @https://scarletsky.github.io/2016/01/30/nodejs-process-excel/
-* @http://www.mystorp.com/2015/11/07/nodejs-process-excel/
-* @https://aotu.io/notes/2016/04/07/node-excel/
-* @https://github.com/tokuhirom/js-xlsx-demo
-*/
-
-
 // 引入 xlsx 模块
 // https://github.com/SheetJS/js-xlsx
 var xlsx = require("xlsx");
+var fs = require("fs");
 
 // workbook 对象表示整份 Excel 文档
 // 一个 workbook 对象包含了 N 个 sheets（看 Excel 文档的左下角）
-var workbook = xlsx.readFileSync('1.xlsx');
+var workbook = xlsx.readFileSync('example.xlsx');
 
 
 // 打印出每个 sheet 的 name
@@ -35,11 +27,12 @@ var sheet = workbook.Sheets[firstSheetName];
 // console.log(sheet['!merges']);
 
 // cell 对象，指的是 sheet 中的单元格，一个单元格就是一个 cell 对象
-// 一行 A 列
-// 对于多个单元格合并的大 cell，取左上角的单元格表示
-// 别的单元格显示 undefined
+// 一行 A 列（最左上角的 cell）
+// 对于多个单元格合并的大 cell，取左上角的单元格表示，别的单元格显示 undefined
 var cell = sheet["A1"];
 console.log(cell);
 
 // the value of a cell
 console.log(cell.v);
+
+// fs.writeFileSync("a.txt", cell.v);
