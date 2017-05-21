@@ -1,0 +1,139 @@
+<link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    .chat-area {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        height: 600px;
+        overflow: scroll;
+        margin-bottom: 5px;
+    }
+
+    .chat-area .item {
+        height: 30px;
+        line-height: 30px;
+        margin: 0 20px;
+    }
+
+    .chat-area .item .name {
+        padding-right: 5px;
+    }
+</style>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h4 class="panel-title text-center" id="onlineNumber">匿名聊天室</h4></div>
+                    <div class="panel-body">
+                        <div class="chat-area">
+                            <div class="item"></div>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="请输入你的聊天内容，按 Send 按钮或者回车键发送" id="msgIpt" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" id="msgBtn">Send</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Input your name in the chat" id="nameIpt" />
+                    </div>
+                    <div class="form-group clearfix" style="margin-bottom:0px">
+                        <button type="button" class="btn btn-primary pull-right" id="nameBtn">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--这个 js 文件实际放在了服务器端的 node_modules 文件夹中，在请求这个文件时会重定向-->
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- 本来想把以下 js 抽出来放到一个文件，奈何一直报 404，不知道怎么处理 -->
+    <script>
+        let config = {
+            name: ''  // nickname
+        };
+
+        // 与 server.js 启动地址对应
+        var socket = io.connect('http://localhost:8080');
+       
+        // 监听服务端发出的 newMessage 事件
+        socket.on('newMessage',  data => generateMsgItem(data));
+
+        socket.on('showOnlineNumber', onlineNumber => {
+            $('#onlineNumber').text(`匿名聊天室（当前在线 ${onlineNumber} 人）`);
+        });
+
+        // 发送信息
+        $("#msgBtn").click(() => {
+            let name = config.name;
+            let msg = document.querySelector("#msgIpt").value;
+            sendMessage({name, msg});
+            $('#msgIpt').val('');
+        });
+
+        // 点击保存昵称
+        $('#nameBtn').click(() => {
+            config.name = $('#nameIpt').val();
+            $('#myModal').modal('hide');
+            socket.emit('finishNickname');
+        });
+
+        // 发送信息以及昵称保存都可以按 enter 键
+        document.onkeydown = e => {
+            if (e.keyCode !== 13) return;
+
+            let id = e.target.id;
+
+            // 发送消息
+            if (id === 'msgIpt') {
+                let name = config.name,
+                    msg = document.querySelector("#msgIpt").value;
+
+                sendMessage({name, msg});
+                $('#msgIpt').val('');
+            } else if (id === 'nameIpt') { // 保存昵称
+                config.name = $('#nameIpt').val();
+
+                $('#myModal').modal('hide'); // 隐藏遮罩层
+                socket.emit('finishNickname');
+            }
+        };
+
+        function sendMessage(data) {
+            // 发送消息
+            socket.emit('sendMsg', data);
+            generateMsgItem(data, true);
+        }
+
+        function generateMsgItem(data, isRight=false) {
+            let item = document.createElement("div");
+            item.className = "item" + (isRight ? " text-right" : '');
+
+            if (isRight)
+                item.innerHTML = `<span class="content">${data.msg}</span><span class="name">【${data.name}】</span>`;
+            else 
+                item.innerHTML = `<span class="name">【${data.name}】</span><span class="content">${data.msg}</span>`;
+
+            document.querySelector(".chat-area").appendChild(item);
+
+            // 如果聊天区域的内容高度大于了 DOM 高度，则自动 scroll 到最底下
+            let realHeight = document.querySelector(".chat-area").scrollHeight;
+            let viewHeight = $('.chat-area').height();
+            $('.chat-area').scrollTop(realHeight - viewHeight);
+        }
+
+        // 页面初始化时显示 modal
+        $('#myModal').modal({show: 'show', backdrop: 'static'});
+    </script>
+</body>

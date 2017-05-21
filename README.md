@@ -9,6 +9,7 @@
 - [博客园博文备份](https://github.com/hanzichi/funny-node/tree/master/cnblogs-backup)
 - [Excel 数据读取](https://github.com/hanzichi/funny-node/tree/master/excel-reader)
 - [Node 操作 MySQL](https://github.com/hanzichi/funny-node/blob/master/node-mysql/index.js)
+- [Chat demo using socket.io](/hanzichi/funny-node/tree/master/chat)
 
 
 [0]: https://github.com/hanzichi/funny-node/tree/master/single-page-analyze
