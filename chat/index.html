@@ -48,6 +48,7 @@
                         <input type="text" class="form-control" placeholder="Input your name in the chat" id="nameIpt" />
                     </div>
                     <div class="form-group clearfix" style="margin-bottom:0px">
+                        <span class="help-block pull-left" style="display:none" id="helpBlock">Your name cannot be empty !</span>
                         <button type="button" class="btn btn-primary pull-right" id="nameBtn">Save</button>
                     </div>
                 </div>
@@ -82,11 +83,23 @@
             $('#msgIpt').val('');
         });
 
+        // 当输入文字时，取消 has-error 样式
+        $('#nameIpt').on("focus", () => {
+            $("#myModal").removeClass("has-error");
+        });
+
         // 点击保存昵称
         $('#nameBtn').click(() => {
-            config.name = $('#nameIpt').val();
-            $('#myModal').modal('hide');
-            socket.emit('finishNickname');
+            let name = $('#nameIpt').val().trim();
+
+            if (name === '') {
+                $('#myModal').addClass('has-error');
+                $('#helpBlock').show();
+            } else {
+                config.name = name;
+                $('#myModal').modal('hide');
+                socket.emit('finishNickname');
+            }
         });
 
         // 发送信息以及昵称保存都可以按 enter 键
@@ -103,10 +116,15 @@
                 sendMessage({name, msg});
                 $('#msgIpt').val('');
             } else if (id === 'nameIpt') { // 保存昵称
-                config.name = $('#nameIpt').val();
+                let name = $('#nameIpt').val().trim();
 
-                $('#myModal').modal('hide'); // 隐藏遮罩层
-                socket.emit('finishNickname');
+                if (name === '') {
+
+                } else {
+                    config.name = name;
+                    $('#myModal').modal('hide'); // 隐藏遮罩层
+                    socket.emit('finishNickname');
+                }
             }
         };
 
