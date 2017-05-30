@@ -9,6 +9,6 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "xlsx": "^0.8.0"
+    "xlsx": "^0.10.3"
   }
 }
