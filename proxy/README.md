@@ -1,4 +1,4 @@
-分别尝试用 [superagent](/superagent-proxy.js) 以及 [request](/request-proxy.js) 来做 ip 代理的 HTTP 请求库。
+分别尝试用 [superagent](/proxy/superagent-proxy.js) 以及 [request](/proxy/request-proxy.js) 来做 ip 代理的 HTTP 请求库。
 
 使用方法非常简单，首先通过不同渠道获取一些免费 ip，然后通过相应 api 去模拟请求。
 
