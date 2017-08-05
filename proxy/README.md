@@ -16,4 +16,4 @@
 
 todo:
 
-proxies 在你访问 http 时用 http 的设置，访问 https 时用 https 的设置。原代码中只考虑了 http 的情况，todo
+proxies 在你访问 http 时用 http 的设置，访问 https 时用 https 的设置。原代码中只考虑了 http 的情况，可参考 <https://segmentfault.com/q/1010000009677441>
