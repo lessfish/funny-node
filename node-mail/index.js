@@ -43,7 +43,7 @@ var mailOptions = {
   to: 'ooxx@foxmail.com, ooxx@qq.com', // 邮件接收者，可以同时发送多个，逗号分隔
   subject: '测试邮件 title', // Subject line 
   text: 'Hello world', // plaintext body 
-  html: `<h1>Hello world</h1>` // html body，当有 html 参数时会忽略 text 参数
+  html:  fs.readFileSync('./tpl.html', 'utf-8') // html body，发送的邮件内容，当有 html 参数时会忽略 text 参数
 };
  
 // send mail with defined transport object 
