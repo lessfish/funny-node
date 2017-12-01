@@ -4,6 +4,9 @@ var express = require('express')
     , io = require('socket.io').listen(server)
     , onlineNumber = 0;
 
+// 设置静态资源目录
+app.use(express.static('./'))
+
 server.listen(8080, () => {
     console.log("run http://localhost:8080 in your browser");
 });
