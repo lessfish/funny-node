@@ -1,3 +1,8 @@
+```bash
+npm install
+node index.js
+```
+
 根据百度地图 Place API 获取 POI 数据
 
 POI，即 "Point of Interest"，中文翻译为 "兴趣点"。打开百度地图，比如搜索「酒店」，搜索结果就是 POI
