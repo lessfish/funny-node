@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "async": "^2.6.0",
+    "mysql": "^2.15.0",
+    "superagent": "^3.8.2"
+  }
+}

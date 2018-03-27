@@ -1,12 +1,6 @@
-// 多页面抓取
-// async 模块控制并发量
-
 var cheerio = require('cheerio')
   , superagent = require('superagent')
-  , eventproxy = require('eventproxy')
-  , express = require('express')
   , async = require('async');
-
 
 // 需要爬的网址
 function getUrls() {
@@ -44,23 +38,13 @@ function fetchUrl(url, callback) {
 }
 
 
-// start
-var app = express();
+var urls = getUrls();
 
-app.get('/', function (req, res, next) {
-  var urls = getUrls();
-
-  // 并发量控制为 5
-  // 对每个元素执行第三个回调
-  // 全部执行完后执行第四个回调
-  async.mapLimit(urls, 5, function(url, callback) {
-    fetchUrl(url, callback);
-  }, function (err, result) {
-    res.send(result);
-  });
-});
-
-// listen
-app.listen(3000, function () {
-  console.log('app is listening at port 3000');
+// 并发量控制为 5
+// 对每个元素执行第三个回调
+// 全部执行完后执行第四个回调
+async.mapLimit(urls, 5, function(url, callback) {
+  fetchUrl(url, callback);
+}, function (err, result) {
+  console.log(result)
 });

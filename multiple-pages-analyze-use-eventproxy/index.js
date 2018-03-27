@@ -1,14 +1,6 @@
-// 并发抓取 hdoj 1000-1009 十道题目最优解的提交时间
-// 因为异步抓取，所以抓取结果排列不分先后
-// eventproxy 控制模块并发
-// http://www.cnblogs.com/zichi/p/4913133.html
-
-
-var cheerio = require('cheerio')
+const cheerio = require('cheerio')
   , superagent = require('superagent')
   , eventproxy = require('eventproxy')
-  , express = require('express');
-
 
 // 需要爬的网址
 function getUrls() {
@@ -24,15 +16,15 @@ function getUrls() {
 }
 
 // 页面解析，返回需要的内容
-function analyze(page) {
-  var $ = cheerio.load(page);
+function analyze(html) {
+  var $ = cheerio.load(html);
   var userId = $('.table_text td').eq(6).html();
 
   return userId;
 }
 
 // 抓取网页内容
-function fetchUrl(url, ep) {
+function fetchUrl(url) {
   superagent.get(url)
     .end(function (err, res) {
       // 抛出 `curl` 事件
@@ -42,33 +34,25 @@ function fetchUrl(url, ep) {
 
 
 // start
-var app = express();
+var urls = getUrls();
 
-app.get('/', function (req, res, next) {
-  var urls = getUrls();
+// 得到一个 eventproxy 的实例
+var ep = new eventproxy();
 
-  // 得到一个 eventproxy 的实例
-  var ep = new eventproxy();
-
-  // ep 重复监听 `curl` 事件 urls.length 次（在这里也就是 10 次）后
-  // 执行回调函数
-  ep.after('curl', urls.length, function (pages) {
-    // pages 是个数组，包含了 10 次 ep.emit('curl', page) 中的那 10 个 page
-    pages = pages.map(function(page) {
-      // 接下来都是 jQuery 的用法了
-      return analyze(page);
-    });
-
-    // 将内容呈现到页面
-    res.send(pages);
+// ep 重复监听 `curl` 事件 urls.length 次（在这里也就是 10 次）后
+// 执行回调函数
+ep.after('curl', urls.length, function (htmls) {
+  // pages 是个数组，包含了 10 次 ep.emit('curl', page) 中的那 10 个 page
+  var res = htmls.map(function(html) {
+    // 接下来都是 jQuery 的用法了
+    return analyze(html);
   });
 
-  urls.forEach(function(item) {
-    fetchUrl(item, ep);
-  });
+  // 结果呈现
+  console.log(res)
 });
 
-// listen
-app.listen(3000, function () {
-  console.log('app is listening at port 3000');
+// 开始并发爬取
+urls.forEach(function(item) {
+  fetchUrl(item);
 });

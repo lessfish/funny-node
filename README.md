@@ -13,6 +13,7 @@
 - [博客园首页数据分析](/cnblogs-homepage-analyze)
 - [博客园模拟登录](/cnblogs-auto-login)
 - [自动AC机器人](/auto-AC-machine)
+- [爬取百度地图 POI 数据](/poi)
 
 
 ## 其他
