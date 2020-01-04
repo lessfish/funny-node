@@ -1,3 +1,5 @@
+自行修改数据库登录信息、ak、以及 POI 关键字等
+
 ```bash
 npm install
 node index.js
