@@ -1,63 +1,90 @@
-<link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<link
+  href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+  rel="stylesheet" />
 <style>
-    .chat-area {
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        height: 600px;
-        overflow: scroll;
-        margin-bottom: 5px;
-    }
+  .chat-area {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 600px;
+    overflow: scroll;
+    margin-bottom: 5px;
+  }
 
-    .chat-area .item {
-        height: 30px;
-        line-height: 30px;
-        margin: 0 20px;
-    }
+  .chat-area .item {
+    height: 30px;
+    line-height: 30px;
+    margin: 0 20px;
+  }
 
-    .chat-area .item .name {
-        padding-right: 5px;
-    }
+  .chat-area .item .name {
+    padding-right: 5px;
+  }
 </style>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 col-md-offset-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><h4 class="panel-title text-center" id="onlineNumber">匿名聊天室</h4></div>
-                    <div class="panel-body">
-                        <div class="chat-area">
-                            <div class="item"></div>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="请输入你的聊天内容，按 Send 按钮或者回车键发送" id="msgIpt" />
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" id="msgBtn">Send</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title text-center" id="onlineNumber">
+              匿名聊天室
+            </h4>
+          </div>
+          <div class="panel-body">
+            <div class="chat-area">
+              <div class="item"></div>
             </div>
-        </div>
-    </div>
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Input your name in the chat" id="nameIpt" />
-                    </div>
-                    <div class="form-group clearfix" style="margin-bottom:0px">
-                        <span class="help-block pull-left" style="display:none" id="helpBlock">Your name cannot be empty !</span>
-                        <button type="button" class="btn btn-primary pull-right" id="nameBtn">Save</button>
-                    </div>
-                </div>
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="请输入你的聊天内容，按 Send 按钮或者回车键发送"
+                id="msgIpt" />
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" id="msgBtn">
+                  Send
+                </button>
+              </span>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-    <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!--这个 js 文件实际放在了服务器端的 node_modules 文件夹中，在请求这个文件时会重定向-->
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="./client.js"></script>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Input your name in the chat"
+              id="nameIpt" />
+          </div>
+          <div class="form-group clearfix" style="margin-bottom: 0px">
+            <span
+              class="help-block pull-left"
+              style="display: none"
+              id="helpBlock"
+              >Your name cannot be empty !</span
+            >
+            <button
+              type="button"
+              class="btn btn-primary pull-right"
+              id="nameBtn">
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- 这个 js 文件实际放在了服务器端的 node_modules 文件夹中，在请求这个文件时会重定向，应该是在 socket.io 模块启动时做的 proxy -->
+  <!-- 真实文件地址 node_modules/socket.io-client/dist/socket.io.min.js -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="./client.js"></script>
 </body>
